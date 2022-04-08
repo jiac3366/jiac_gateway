@@ -1,0 +1,99 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "contact": {}
+    },
+    "paths": {
+        "/admin_login/login": {
+            "post": {
+                "description": "管理员登陆",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "管理员接口"
+                ],
+                "summary": "管理员登陆",
+                "operationId": "/admin_login/login",
+                "parameters": [
+                    {
+                        "description": "body",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.AdminLoginInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/middleware.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/dto.AdminLoginOutput"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "dto.AdminLoginInput": {
+            "type": "object",
+            "required": [
+                "name",
+                "pwd"
+            ],
+            "properties": {
+                "name": {
+                    "description": "tag:介绍  example 设默认值，comment 定义错误输出，validate 必填，form 由request转为struct——json相反\nvalidate的is_valid_username  定义在middleware/translate.go  实现对UserName的校验  如果不等于adminss则报错",
+                    "type": "string",
+                    "example": "admin"
+                },
+                "pwd": {
+                    "type": "string",
+                    "example": "123456"
+                }
+            }
+        },
+        "dto.AdminLoginOutput": {
+            "type": "object",
+            "properties": {
+                "token": {
+                    "description": "token",
+                    "type": "string",
+                    "example": "token"
+                }
+            }
+        },
+        "middleware.Response": {
+            "type": "object",
+            "properties": {
+                "data": {},
+                "errmsg": {
+                    "type": "string"
+                },
+                "errno": {
+                    "type": "integer"
+                },
+                "stack": {},
+                "trace_id": {}
+            }
+        }
+    }
+}

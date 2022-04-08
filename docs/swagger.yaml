@@ -1,0 +1,65 @@
+definitions:
+  dto.AdminLoginInput:
+    properties:
+      name:
+        description: |-
+          tag:介绍  example 设默认值，comment 定义错误输出，validate 必填，form 由request转为struct——json相反
+          validate的is_valid_username  定义在middleware/translate.go  实现对UserName的校验  如果不等于adminss则报错
+        example: admin
+        type: string
+      pwd:
+        example: "123456"
+        type: string
+    required:
+    - name
+    - pwd
+    type: object
+  dto.AdminLoginOutput:
+    properties:
+      token:
+        description: token
+        example: token
+        type: string
+    type: object
+  middleware.Response:
+    properties:
+      data: {}
+      errmsg:
+        type: string
+      errno:
+        type: integer
+      stack: {}
+      trace_id: {}
+    type: object
+info:
+  contact: {}
+paths:
+  /admin_login/login:
+    post:
+      consumes:
+      - application/json
+      description: 管理员登陆
+      operationId: /admin_login/login
+      parameters:
+      - description: body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/dto.AdminLoginInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            allOf:
+            - $ref: '#/definitions/middleware.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/dto.AdminLoginOutput'
+              type: object
+      summary: 管理员登陆
+      tags:
+      - 管理员接口
+swagger: "2.0"
